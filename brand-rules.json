@@ -1,0 +1,69 @@
+{
+  "$comment": "Brand-and-claim rules for handebalci-web (luvita-docs#9, EmirErs W7). No build step: python3 .github/scripts/brand-check.py. Schema: https://github.com/AnunnakiCosmoCrew/project-templates/tree/main/actions/brand-claim-check",
+  "root": ".",
+  "rules": [
+    {
+      "id": "tbb-no-advertising-language-tr",
+      "kind": "banned",
+      "pattern": "\\ben iyi\\b|\\ben başarılı\\b|\\ben deneyimli\\b|\\ben güvenilir\\b|\\ben uygun\\b|kazandır|kesin (sonuç|başarı|çözüm)|\\bgaranti|%\\s*100|yüzde yüz|\\blider\\b|ücretsiz (danışma|görüşme)|\\bindirim|\\bkampanya|\\bbaşarı oranı",
+      "paths": ["/index.html"],
+      "why": "CLAUDE.md, Reklam yasağına uygunluk: içerik TBB meslek kurallarına uygun, bilgilendirme amaçlı kalmalı; \"en iyi\", \"kazandırır\" gibi reklam/övgü dili kullanılmaz (rule inventory 66)."
+    },
+    {
+      "id": "tbb-no-advertising-language-en",
+      "kind": "banned",
+      "pattern": "\\bthe best\\b|\\bbest (lawyer|attorney|law firm)|\\bmost (successful|experienced|trusted)\\b|\\bguarantee|\\bwin(s|ning)? your case|\\bwe win\\b|\\b(top|leading) (lawyer|attorney|law firm)|free consultation|\\bdiscount|\\bsuccess rate|100\\s*%",
+      "paths": ["/en/index.html"],
+      "why": "CLAUDE.md, Reklam yasağına uygunluk: the English page follows the same TBB rules; no superlatives, guarantees or result promises (rule inventory 66)."
+    },
+    {
+      "id": "footer-notice-tr",
+      "kind": "required",
+      "pattern": "Türkiye Barolar Birliği'nin meslek kurallarına uygun olarak yalnızca bilgilendirme amacıyla hazırlanmıştır; reklam amacı taşımaz\\.",
+      "paths": ["/index.html"],
+      "why": "CLAUDE.md: Footer'daki bilgilendirme notunu kaldırma."
+    },
+    {
+      "id": "footer-notice-en",
+      "kind": "required",
+      "pattern": "prepared for informational purposes only, in accordance with the professional rules of the Union of Turkish Bar Associations; it is not intended as advertising\\.",
+      "paths": ["/en/index.html"],
+      "why": "CLAUDE.md: the footer notice stays, in both languages."
+    },
+    {
+      "id": "no-cname-until-registered",
+      "kind": "file-banned",
+      "paths": ["/CNAME"],
+      "why": "CLAUDE.md: CNAME dosyasını alan adı tescil edilmeden ekleme; it would point Pages at a dead domain. Remove this rule in the PR that registers handebalci.av.tr."
+    },
+    {
+      "id": "tr-en-page-parity",
+      "kind": "pair",
+      "left": "",
+      "right": "en/",
+      "paths": ["/*.html"],
+      "why": "CLAUDE.md, İki dil senkron: every page exists in both locales (index.html <-> en/index.html)."
+    },
+    {
+      "id": "no-client-side-js",
+      "kind": "banned",
+      "pattern": "<script(?![^>]*application/ld\\+json)",
+      "paths": ["**/*.html"],
+      "why": "CLAUDE.md: sıfır client-side JS, harici istek yok."
+    },
+    {
+      "id": "no-external-requests",
+      "kind": "banned",
+      "pattern": "https?://[^\"' )]*(googleapis|gstatic|googletagmanager|google-analytics|cdn\\.jsdelivr|unpkg\\.com|cdnjs|fontawesome|typekit)",
+      "paths": ["**/*.html", "assets/**/*.css"],
+      "why": "CLAUDE.md: font, analytics, CDN, çerez, izleme yok."
+    },
+    {
+      "id": "no-absolute-paths",
+      "kind": "banned",
+      "pattern": "(href|src)=\"/(?!/)",
+      "paths": ["**/*.html"],
+      "why": "CLAUDE.md, Tüm linkler göreli: the site runs both under github.io/handebalci-web/ and at a custom-domain root; never a path starting with \"/\"."
+    }
+  ]
+}

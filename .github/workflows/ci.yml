@@ -1,0 +1,30 @@
+name: CI
+
+# The gate for pull requests. Plain HTML/CSS, no build step; the only check is the
+# brand-and-claim check (luvita-docs#9): TBB advertising language banned in both
+# languages, the footer notice present, no CNAME until the domain is registered,
+# TR/EN page parity, zero client-side JS, no external requests, relative links only.
+# Rules and reasons live in brand-rules.json; the script is vendored from
+# project-templates/actions/brand-claim-check.
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Brand and claim check
+        run: python3 .github/scripts/brand-check.py --rules brand-rules.json
