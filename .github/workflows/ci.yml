@@ -10,6 +10,9 @@ name: CI
 on:
   pull_request:
     branches: [main]
+  # CLAUDE.md still permits a direct push to main for this small site; the gate runs there too.
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
