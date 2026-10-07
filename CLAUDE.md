@@ -35,4 +35,4 @@ Gerçek bilgi geldikçe `[KÖŞELİ PARANTEZ]` içindekiler değiştirilecek (ik
 ## Conventions
 
 - Stil tek dosyada: `assets/style.css`. Renk/tipografi token'ları `:root`'ta.
-- Trunk-based; küçük site olduğu için doğrudan `main`'e push kabul edilir.
+- Trunk-based; her değişiklik dal + PR ile gelir (`feature/N-slug`, squash merge). `main`'e doğrudan push'u `main-protection` ruleset'i sunucu tarafında, `git-guard.py` (Claude Code managed settings, özel `emirers` deposu) yerelde reddeder; ayrıntı `emirers/README.md`.
